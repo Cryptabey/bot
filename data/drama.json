@@ -52,7 +52,11 @@
     "Dan",
     "Zenith",
     "zzvvwwaa",
-    "Fork Gaming"
+    "Fork Gaming",
+    "Auto",
+    "Valeena",
+    "WhitestKanye",
+    "Monica Lewinsky"
   ],
   "servers": [
     "FMHY",
@@ -64,7 +68,22 @@
     "Esoterica Avenue",
     "Movies4Discord",
     "Gamesdrive",
-    "The QMJ"
+    "The QMJ",
+    "massgrave",
+    "Rims Linux Wiki",
+    "homebrew community",
+    "Vencord"
+  ],
+  "bsoftware": [
+    "Microsoft Edge",
+    "IGG Games",
+    "Avast Antivirus",
+    "Opera",
+    "Opera GX",
+    "uTorrent",
+    "BitTorrent",
+    "McAfee",
+    "TLauncher"
   ],
   "phrases": [
     "%p's community splits due to %p, much to the dismay of %p.",
@@ -97,10 +116,22 @@
     "%s gets raided by a group of people with %p at its front.",
     "%p gets banned for promoting their own project.",
     "%p gets banned for spamming Hatsune Miku gifs.",
-    "%p attacks %p for hating %p."
+    "%p attacks %p for hating %p.",
+    "%p gets banned for supporting the #RimForCaptain movement.",
+    "%p becomes captain, which upsets %p.",
+    "%p gets demoted for offensive jokes.",
+    "%p gets banned for conspiring against %s.",
+    "%p uses Microsoft Edge, which enrages the entire community of %s.",
+    "%p creates Paid Media Heck Yeah, which moves nbats to ban them.",
+    "%p mutes %p for hurting their feelings.",
+    "%p gets under fire for supporting %b.",
+    "%b's owner doxxes %p.",
+    "%b gets partnership with %s, which enrages %p.",
+    "%p accuses $p of destroying their relationship with %p."
   ],
   "replacers": {
     "%s": "servers",
-    "%p": "people"
+    "%p": "people",
+    "%b": "bsoftware"
   }
 }
