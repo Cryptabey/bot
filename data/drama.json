@@ -127,6 +127,7 @@
     "%p gets under fire for supporting %b.",
     "%b's owner doxxes %p.",
     "%b gets partnership with %s, which enrages %p.",
+    "%p gets banned from %s for using Microsoft edge on Linux.",
     "%p accuses $p of destroying their relationship with %p."
   ],
   "replacers": {
