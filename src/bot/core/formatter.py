@@ -1,58 +1,53 @@
-from pathlib import Path
 import logging
+import logging.handlers
 import sys
-from typing import Optional
+from typing import Any
 
-PROJECT_ROOT = Path(__file__).parents[3]  # Go up 3 levels to reach project root
 
-class Formatter(logging.Formatter):
-    grey = "\x1b[38;1m"
-    white = "\x1b[37;1m"
-    yellow = "\x1b[33;1m"
-    red = "\x1b[31;1m"
-    purple = "\x1b[35;1m"
+class CustomFormatter(logging.Formatter):
+    grey = "\x1b[38;21m"
+    blue = "\x1b[38;5;39m"
+    yellow = "\x1b[38;5;226m"
+    red = "\x1b[38;5;196m"
+    bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"
-    format_string = "[{asctime}] [{levelname:<8}] {name}: {message}"
 
-    FORMATS = {
-        logging.DEBUG: grey + format_string + reset,
-        logging.INFO: white + format_string + reset,
-        logging.WARNING: yellow + format_string + reset,
-        logging.ERROR: red + format_string + reset,
-        logging.CRITICAL: purple + format_string + reset,
-    }
+    def __init__(self):
+        super().__init__()
+        INFO_FORMAT = "%(asctime)s (%(name)s) [%(levelname)s]: %(message)s"
+        FORMAT = "%(asctime)s (%(name)s) [%(levelname)s]: %(message)s (%(filename)s:%(lineno)d)"
+
+        self.FORMATS = {
+            logging.DEBUG: self.grey + FORMAT + self.reset,
+            logging.INFO: self.blue + INFO_FORMAT + self.reset,
+            logging.WARNING: self.yellow + FORMAT + self.reset,
+            logging.ERROR: self.red + FORMAT + self.reset,
+            logging.CRITICAL: self.bold_red + FORMAT + self.reset,
+        }
 
     def format(self, record):
         log_fmt = self.FORMATS.get(record.levelno)
-        formatter = logging.Formatter(log_fmt, "%Y-%m-%d %H:%M:%S", style="{")
+        formatter = logging.Formatter(log_fmt, "(%H:%M)")
         return formatter.format(record)
 
 
-def install(name: str, level: str = "INFO") -> None:
+def install(name: str, flavor: Any) -> None:
+    # core logger
     logger = logging.getLogger(name)
-    logger.setLevel(level)
+    logger.setLevel(flavor)
 
-    # Console handler
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(Formatter())
-    logger.addHandler(console_handler)
+    # Make logging faster
+    logging.logThreads = False
+    logging.logProcesses = False
 
-    # File handler
-    log_path = PROJECT_ROOT / "logs" / f"{name}.log"
-    log_path.parent.mkdir(exist_ok=True)  # Create logs directory if it doesn't exist
-    file_handler = logging.FileHandler(str(log_path), encoding="utf-8")
-    file_handler.setFormatter(
-        logging.Formatter(
-            "[{asctime}] [{levelname:<8}] {name}: {message}",
-            "%Y-%m-%d %H:%M:%S",
-            style="{",
-        )
-    )
+    handler = logging.StreamHandler(stream=sys.stdout)
+    handler.setLevel(flavor)
+
+    handler.setFormatter(CustomFormatter())
+    logger.addHandler(handler)
+
+    # file logging (optional)
+    file_handler = logging.FileHandler(f"logs/{name}.log", encoding="utf-8")
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(CustomFormatter())
     logger.addHandler(file_handler)
-
-    return None
-
-
-def get_logger(name: Optional[str] = None) -> logging.Logger:
-    return logging.getLogger(name)
-
